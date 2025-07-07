@@ -1,0 +1,119 @@
+Usecase 4
+
+git config --global user.name "prathab02"
+git config --global user.email "cloudprathab@gmail.com"
+git config --list
+git init
+cd .git/
+
+git clone https://github.com/prathab02/retailspark.git
+cd retailspark/
+mkdir -p ~/project
+cp Usecase4_GcpGcsReadWritehive_cloud.py ~/project
+cp gcp_pyspark_schedule.sh ~/project
+chmod 777 ~/project/*
+cd ~/project/
+
+
+cloudprathab@cluster-iz-dplr-m:~$ gcloud dataproc jobs submit pyspark --cluster=cluster-iz-dplr --region=us-central1 --properties="spark.driver.memory=2g","spark.executor.memory=2g","spark.executor.instances=4","spark.executor.cores=2","spark.submit.deployMode=client","spark.sql.shuffle.partitions=10","spark.shuffle.spill.compress=true" /home/cloudprathab/project/Usecase4_GcpGcsReadWritehive_cloud.py
+
+Job [cd55e98fe5af4fbcaf99e5f305d9e573] submitted.
+Waiting for job output...
+25/07/07 00:15:18 INFO SparkEnv: Registering MapOutputTracker
+25/07/07 00:15:18 INFO SparkEnv: Registering BlockManagerMaster
+25/07/07 00:15:19 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+25/07/07 00:15:19 INFO SparkEnv: Registering OutputCommitCoordinator
+25/07/07 00:15:21 INFO DataprocSparkPlugin: Registered 128 driver metrics
+25/07/07 00:15:23 INFO DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at cluster-iz-dplr-m.us-central1-a.c.iz-dataanalyst-wd34.internal./10.128.0.24:8032
+25/07/07 00:15:23 INFO AHSProxy: Connecting to Application History server at cluster-iz-dplr-m.us-central1-a.c.iz-dataanalyst-wd34.internal./10.128.0.24:10200
+25/07/07 00:15:24 INFO Configuration: resource-types.xml not found
+25/07/07 00:15:24 INFO ResourceUtils: Unable to find 'resource-types.xml'.
+25/07/07 00:15:27 INFO YarnClientImpl: Submitted application application_1751843589056_0001
+25/07/07 00:15:29 INFO DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at cluster-iz-dplr-m.us-central1-a.c.iz-dataanalyst-wd34.internal./10.128.0.24:8030
+25/07/07 00:15:32 INFO GhfsStorageStatistics: Detected potential high latency for operation op_get_file_status. latencyMs=1314; previousMaxLatencyMs=0; operationCount=1; context=gs://dataproc-temp-us-central1-718781222159-6rsgi5lu/23931098-6cd4-4152-b613-0e98caa258d8/spark-job-history
+25/07/07 00:15:32 INFO GoogleCloudStorageImpl: Ignoring exception of type GoogleJsonResponseException; verified object already exists with desired state.
+Use Spark Application to Read csv data from cloud GCS+Hive and get a DF created with the GCS data in the GCP, convert csv to json in the DF and store the json into new cloud GCS+Hive location
++-------+---------+----------+-------+--------------------+
+|     id|custfname| custlname|custage|      custprofession|
++-------+---------+----------+-------+--------------------+
+|4000001| Kristina|     Chung|     55|               Pilot|
+|4000002|    Paige|      Chen|     77|             Teacher|
+|4000003|   Sherri|    Melton|     34|         Firefighter|
+|4000004| Gretchen|      Hill|     66|Computer hardware...|
+|4000005|    Karen|   Puckett|     74|              Lawyer|
+|4000006|  Patrick|      Song|     42|        Veterinarian|
+|4000007|    Elsie|  Hamilton|     43|               Pilot|
+|4000008|    Hazel|    Bender|     63|           Carpenter|
+|4000009|  Malcolm|    Wagner|     39|              Artist|
+|4000010|  Dolores|McLaughlin|     60|              Writer|
++-------+---------+----------+-------+--------------------+
+only showing top 10 rows
+
+GCS Read Completed Successfully
+25/07/07 00:15:51 INFO HiveConf: Found configuration file file:/etc/hive/conf.dist/hive-site.xml
+ivysettings.xml file not found in HIVE_HOME or HIVE_CONF_DIR,/etc/hive/conf.dist/ivysettings.xml will be used
+25/07/07 00:15:51 INFO DependencyResolver: ivysettings.xml file not found in HIVE_HOME or HIVE_CONF_DIR,/etc/hive/conf.dist/ivysettings.xml will be used
+25/07/07 00:15:52 INFO metastore: Trying to connect to metastore with URI thrift://cluster-iz-dplr-m:9083
+25/07/07 00:15:52 INFO metastore: Opened a connection to metastore, current connections: 1
+25/07/07 00:15:52 INFO metastore: Connected to metastore.
+25/07/07 00:16:11 INFO SQLStdHiveAccessController: Created SQLStdHiveAccessController for session context : HiveAuthzSessionContext [sessionString=a3d68358-a2cd-4fe8-b7b5-4fac24898463, clientType=HIVECLI]
+25/07/07 00:16:11 WARN SessionState: METASTORE_FILTER_HOOK will be ignored, since hive.security.authorization.manager is set to instance of HiveAuthorizerFactory.
+25/07/07 00:16:11 INFO metastore: Mestastore configuration hive.metastore.filter.hook changed from org.apache.hadoop.hive.metastore.DefaultMetaStoreFilterHookImpl to org.apache.hadoop.hive.ql.security.authorization.plugin.AuthorizationMetaStoreFilterHook
+25/07/07 00:16:11 INFO metastore: Closed a connection to metastore, current connections: 0
+25/07/07 00:16:11 INFO metastore: Trying to connect to metastore with URI thrift://cluster-iz-dplr-m:9083
+25/07/07 00:16:11 INFO metastore: Opened a connection to metastore, current connections: 1
+25/07/07 00:16:11 INFO metastore: Connected to metastore.
+25/07/07 00:16:11 INFO metastore: Trying to connect to metastore with URI thrift://cluster-iz-dplr-m:9083
+25/07/07 00:16:11 INFO metastore: Opened a connection to metastore, current connections: 2
+25/07/07 00:16:11 INFO metastore: Connected to metastore.
+GCS to hive table load Completed Successfully
+Hive to GCS usecase starts here
+25/07/07 00:16:42 INFO PathOutputCommitterFactory: No output committer factory defined, defaulting to FileOutputCommitterFactory
+25/07/07 00:16:47 INFO GoogleCloudStorageFileSystem: Successfully repaired 'gs://prathab-wd34/output/dataset/cust_output_json_20250707001640/' directory.
+25/07/07 00:16:47 INFO GhfsStorageStatistics: Detected potential high latency for operation op_delete. latencyMs=766; previousMaxLatencyMs=0; operationCount=1; context=gs://prathab-wd34/output/dataset/cust_output_json_20250707001640/_temporary
+25/07/07 00:16:48 INFO GhfsStorageStatistics: Detected potential high latency for operation stream_write_close_operations. latencyMs=515; previousMaxLatencyMs=0; operationCount=1; context=gs://prathab-wd34/output/dataset/cust_output_json_20250707001640/_SUCCESS
+gcs Write Completed Successfully
+Hive to GCS usecase starts here
+20250707001618
+25/07/07 00:16:52 INFO PathOutputCommitterFactory: No output committer factory defined, defaulting to FileOutputCommitterFactory
+25/07/07 00:16:57 INFO GoogleCloudStorageFileSystem: Successfully repaired 'gs://prathab-wd34/output/dataset/cust_csv/' directory.
+gcs Write Completed Successfully
+25/07/07 00:16:58 INFO DataprocSparkPlugin: Shutting down driver plugin. metrics=[files_created=3, gcs_api_server_not_implemented_error_count=0, gcs_api_server_timeout_count=0, action_http_post_request_failures=0, op_get_list_status_result_size=1, op_open=0, gcs_api_client_unauthorized_response_count=0, action_http_head_request_failures=0, stream_read_close_operations=0, stream_read_bytes_backwards_on_seek=0, exception_count=59, gcs_api_total_request_count=65, op_create=3, gcs_api_client_bad_request_count=0, op_create_non_recursive=0, gcs_api_client_gone_response_count=0, stream_write_operations=0, stream_read_operations=0, gcs_api_client_request_timeout_count=0, op_rename=0, op_get_file_status=5, stream_read_total_bytes=0, op_glob_status=0, stream_read_exceptions=0, action_http_get_request_failures=0, op_exists=0, stream_write_bytes=994052, op_xattr_list=0, stream_write_exceptions=0, gcs_api_server_unavailable_count=0, directories_created=0, files_delete_rejected=0, op_xattr_get_named=0, op_hsync=0, stream_read_operations_incomplete=0, op_delete=4, stream_read_bytes=0, gcs_api_client_non_found_response_count=32, gcs_api_client_requested_range_not_statisfiable_count=0, op_hflush=0, op_list_status=1, op_xattr_get_named_map=0, gcs_api_client_side_error_count=88, op_get_file_checksum=0, action_http_delete_request_failures=0, gcs_api_server_internal_error_count=0, stream_read_seek_bytes_skipped=0, stream_write_close_operations=2, op_list_files=0, files_deleted=0, op_mkdirs=3, gcs_api_client_rate_limit_error_count=0, action_http_put_request_failures=0, gcs_api_server_bad_gateway_count=0, stream_read_seek_backward_operations=0, gcs_api_server_side_error_count=0, action_http_patch_request_failures=0, stream_read_seek_operations=0, stream_read_seek_forward_operations=0, gcs_api_client_precondition_failed_response_count=1, directories_deleted=0, op_xattr_get_map=0, delegation_tokens_issued=0, op_create_min=228, op_delete_min=63, op_mkdirs_min=313, op_create_non_recursive_min=0, op_glob_status_min=0, op_hsync_min=0, op_xattr_get_named_min=0, op_list_status_min=132, op_xattr_get_named_map_min=0, stream_read_close_operations_min=0, stream_read_operations_min=0, stream_read_seek_operations_min=0, op_hflush_min=0, op_xattr_get_map_min=0, op_xattr_list_min=0, stream_write_operations_min=0, op_get_file_status_min=63, op_open_min=0, op_rename_min=0, delegation_tokens_issued_min=0, stream_write_close_operations_min=325, stream_read_close_operations_max=0, stream_read_operations_max=0, stream_read_seek_operations_max=0, op_hflush_max=0, op_xattr_list_max=0, op_xattr_get_map_max=0, op_xattr_get_named_max=0, op_create_non_recursive_max=0, op_glob_status_max=0, op_get_file_status_max=1314, stream_write_close_operations_max=515, op_open_max=0, delegation_tokens_issued_max=0, op_mkdirs_max=473, op_rename_max=0, op_create_max=393, op_delete_max=766, op_list_status_max=132, op_xattr_get_named_map_max=0, stream_write_operations_max=0, op_hsync_max=0, op_list_status_mean=132, stream_read_close_operations_mean=0, op_open_mean=0, op_xattr_get_named_map_mean=0, op_xattr_list_mean=0, op_mkdirs_mean=393, stream_write_close_operations_mean=420, op_rename_mean=0, op_hsync_mean=0, delegation_tokens_issued_mean=0, stream_read_operations_mean=0, op_xattr_get_map_mean=0, op_create_mean=301, op_glob_status_mean=0, op_delete_mean=398, stream_read_seek_operations_mean=0, stream_write_operations_mean=0, op_create_non_recursive_mean=0, op_hflush_mean=0, op_xattr_get_named_mean=0, op_get_file_status_mean=431, stream_write_operations_duration=0, stream_read_operations_duration=0]
+Job [cd55e98fe5af4fbcaf99e5f305d9e573] finished successfully.
+done: true
+driverControlFilesUri: gs://prathab-wd34/google-cloud-dataproc-metainfo/23931098-6cd4-4152-b613-0e98caa258d8/jobs/cd55e98fe5af4fbcaf99e5f305d9e573/
+driverOutputResourceUri: gs://prathab-wd34/google-cloud-dataproc-metainfo/23931098-6cd4-4152-b613-0e98caa258d8/jobs/cd55e98fe5af4fbcaf99e5f305d9e573/driveroutput
+jobUuid: 02641c59-f4ac-31e7-88b4-c8a07ade4cc3
+placement:
+  clusterName: cluster-iz-dplr
+  clusterUuid: 23931098-6cd4-4152-b613-0e98caa258d8
+pysparkJob:
+  mainPythonFileUri: gs://prathab-wd34/google-cloud-dataproc-metainfo/23931098-6cd4-4152-b613-0e98caa258d8/jobs/cd55e98fe5af4fbcaf99e5f305d9e573/staging/Usecase4_GcpGcsReadWritehive_cloud.py
+  properties:
+    spark.driver.memory: 2g
+    spark.executor.cores: '2'
+    spark.executor.instances: '4'
+    spark.executor.memory: 2g
+    spark.shuffle.spill.compress: 'true'
+    spark.sql.shuffle.partitions: '10'
+    spark.submit.deployMode: client
+reference:
+  jobId: cd55e98fe5af4fbcaf99e5f305d9e573
+  projectId: iz-dataanalyst-wd34
+status:
+  state: DONE
+  stateStartTime: '2025-07-07T00:17:00.864218Z'
+statusHistory:
+- state: PENDING
+  stateStartTime: '2025-07-07T00:15:05.919125Z'
+- state: SETUP_DONE
+  stateStartTime: '2025-07-07T00:15:05.948038Z'
+- details: Agent reported job success
+  state: RUNNING
+  stateStartTime: '2025-07-07T00:15:06.499661Z'
+yarnApplications:
+- name: GCP GCS Hive Read/Write
+  progress: 1.0
+  state: FINISHED
+  trackingUrl: http://cluster-iz-dplr-m.us-central1-a.c.iz-dataanalyst-wd34.internal.:8088/proxy/application_1751843589056_0001/
+cloudprathab@cluster-iz-dplr-m:~$ 
