@@ -1,0 +1,1 @@
+gcloud dataproc jobs submit pyspark --cluster=cluster-iz-dplr --region=us-central1 --jars gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.7.jar,gs://spark-lib/bigquery/spark-3.1-bigquery-0.32.2.jar gs://prathab-wd34/scripts/Usecase5_gcsToBQRawToBQCurated.py
